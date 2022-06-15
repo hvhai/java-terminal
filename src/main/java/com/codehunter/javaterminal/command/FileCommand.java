@@ -40,9 +40,7 @@ public class FileCommand {
     var path = Path.of(globalStack.getCurrentDirectory());
     var result = new StringBuilder();
     if (Files.isDirectory(path)) {
-      Files.list(path)
-          .forEach(
-              e -> result.append(e).append('\n'));
+      Files.list(path).forEach(e -> result.append(e).append('\n'));
     }
     return result.toString();
   }
