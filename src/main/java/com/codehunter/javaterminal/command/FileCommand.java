@@ -21,18 +21,22 @@ public class FileCommand {
 
   @ShellMethod("Current directory")
   public String cd(String uri) {
-    var path = Paths.get(uri);
-    if (path.isAbsolute() && Files.isDirectory(path)) {
+    if (isAbsolutePath(uri)) {
       globalStack.setCurrentDirectory(uri);
       return "change directory successfully";
     } else {
       var newUri = Paths.get(globalStack.getCurrentDirectory()).resolve(uri).toAbsolutePath();
       if (Files.isDirectory(newUri)) {
-        globalStack.setCurrentDirectory(newUri.toString());
+        globalStack.setCurrentDirectory(newUri.toAbsolutePath().normalize().toString());
         return "change directory successfully";
       }
       return "input is not a directory";
     }
+  }
+
+  private boolean isAbsolutePath(String uri) {
+    var path = Paths.get(uri);
+    return path.isAbsolute() && Files.isDirectory(path);
   }
 
   @ShellMethod("List all file in directory")
